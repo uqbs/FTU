@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Directory Listing</title>
+  <meta name="description" content="Lists files in the repository root." />
+  <style>
+    :root{ color-scheme: light dark; }
+    body{
+      margin:0; font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial;
+      line-height:1.6; padding:24px; max-width:860px; margin-inline:auto;
+    }
+    h1{ font-size:clamp(20px,3vw,28px); margin:0 0 12px; }
+    p.hint{ margin:0 0 16px; color:#64748b; }
+    ul{ list-style:none; padding:0; margin:0; }
+    li{
+      border:1px solid rgba(148,163,184,.3); border-radius:10px; padding:10px 12px; margin:8px 0;
+      display:flex; align-items:center; justify-content:space-between; gap:12px;
+    }
+    a{ text-decoration:none; color:inherit; }
+    .name{ display:flex; align-items:center; gap:10px; min-width:0; }
+    .name .icon{ font-size:18px; }
+    .name .text{ white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .meta{ color:#64748b; font-size:14px; }
+    .error{ color:#b91c1c; }
+  </style>
+</head>
+<body>
+  <h1>Files in this directory</h1>
+  <p id="status" class="hint">Loading…</p>
+  <ul id="files" aria-live="polite"></ul>
+
+  <noscript>
+    <p class="error">This page requires JavaScript to fetch the file list from the GitHub API.</p>
+  </noscript>
+
+  <script>
+    (async () => {
+      const statusEl = document.getElementById('status');
+      const listEl = document.getElementById('files');
+
+      // --- Configuration (override as needed) ---
+      const CONFIG = {
+        OWNER: '',        // e.g., 'uqbs' (leave blank to auto-detect on *.github.io)
+        REPO: '',         // e.g., 'BSAN2204' (auto-detect when possible)
+        BRANCH: 'main',   // 'main' or 'gh-pages' or your default branch
+        PATH: ''          // folder within repo to list ('' means repo root of the Pages source)
+      };
+
+      // Try to auto-detect owner/repo for GitHub Pages
+      function autodetect() {
+        const host = location.hostname;               // e.g., uqbs.github.io or custom domain
+        const parts = location.pathname.split('/').filter(Boolean); // e.g., ['BSAN2204', ...]
+        let owner = CONFIG.OWNER || '';
+        let repo = CONFIG.REPO || '';
+
+        if (!owner && host.endsWith('.github.io')) {
+          owner = host.split('.')[0]; // 'uqbs'
+        }
+        if (!repo) {
+          // Project page pattern: /REPO_NAME/...
+          if (parts.length > 0) {
+            repo = parts[0];          // 'BSAN2204'
+          } else if (owner && host.endsWith('.github.io')) {
+            // User/Org site
+            repo = `${owner}.github.io`;
+          }
+        }
+        return { owner, repo };
+      }
+
+      const { owner, repo } = autodetect();
+      if (!owner || !repo) {
+        statusEl.className = 'error';
+        statusEl.textContent = 'Could not detect repository. Set OWNER and REPO in the script config.';
+        return;
+      }
+
+      // Build GitHub Contents API URL for the folder to list
+      const branch = CONFIG.BRANCH || 'main';
+      const apiPath = CONFIG.PATH ? `/${CONFIG.PATH.replace(/^\/|\/$/g, '')}` : '';
+      const apiURL = `https://api.github.com/repos/${owner}/${repo}/contents${apiPath}?ref=${encodeURIComponent(branch)}`;
+
+      try {
+        const res = await fetch(apiURL, { headers: { 'Accept': 'application/vnd.github+json' } });
+        if (!res.ok) throw new Error(`GitHub API error ${res.status}: ${await res.text()}`);
+        const items = await res.json();
+
+        // Only list files (not directories); hide this index.html
+        const files = (Array.isArray(items) ? items : [])
+          .filter(i => i && i.type === 'file')
+          .filter(i => i.name.toLowerCase() !== 'index.html')
+          .sort((a, b) => a.name.localeCompare(b.name, undefined, { numeric: true }));
+
+        if (files.length === 0) {
+          statusEl.textContent = 'No files found in the root directory.';
+          return;
+        }
+
+        statusEl.textContent = `Found ${files.length} file${files.length > 1 ? 's' : ''}.`;
+        const frag = document.createDocumentFragment();
+
+        for (const f of files) {
+          const li = document.createElement('li');
+
+          const left = document.createElement('div');
+          left.className = 'name';
+          const icon = document.createElement('span');
+          icon.className = 'icon';
+          icon.textContent = '📄';
+
+          const link = document.createElement('a');
+          // IMPORTANT: use a RELATIVE href so it resolves under the current base path (e.g., /BSAN2204/)
+          const relativeHref = encodeURIComponent(f.name).replace(/%2F/g, '/'); // keep any subpaths safe
+          link.setAttribute('href', relativeHref);    // attribute is relative (no leading slash)
+          link.textContent = f.name;
+          link.className = 'text';
+          link.title = f.name;
+
+          left.append(icon, link);
+
+          const right = document.createElement('div');
+          right.className = 'meta';
+          right.textContent = humanSize(f.size);
+
+          li.append(left, right);
+          frag.appendChild(li);
+        }
+
+        listEl.appendChild(frag);
+      } catch (err) {
+        console.error(err);
+        statusEl.className = 'error';
+        statusEl.textContent = 'Failed to load file list. If this is a custom domain, set OWNER and REPO in the config, and ensure BRANCH & PATH match your Pages source.';
+      }
+
+      function humanSize(bytes) {
+        if (bytes === 0) return '0 B';
+        const units = ['B','KB','MB','GB','TB'];
+        const i = Math.floor(Math.log(bytes) / Math.log(1024));
+        return `${(bytes / Math.pow(1024, i)).toFixed(i ? 1 : 0)} ${units[i]}`;
+      }
+    })();
+  </script>
+</body>
+</html>
