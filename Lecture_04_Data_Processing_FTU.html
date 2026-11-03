@@ -1272,7 +1272,7 @@ I was the organiser of the 9th International Choice Modelling Conference (ICMC 2
 </colgroup>
 <thead>
 <tr class="header">
-<th>Week</th>
+<th>Class</th>
 <th>Date</th>
 <th>Day</th>
 <th>Seminar (09:15–12:15, Hanoi time)</th>
@@ -1355,7 +1355,7 @@ I was the organiser of the 9th International Choice Modelling Conference (ICMC 2
 <td>12/11/2026</td>
 <td>Thu</td>
 <td>In-Class Practical Exam – Briefing</td>
-<td>In-Class Practical Exam – Preparation</td>
+<td>Model Validation and Making Predictions</td>
 </tr>
 <tr class="even">
 <td>12</td>
@@ -1796,7 +1796,7 @@ Common pathways explored by students in previous semesters have included filteri
 </section>
 <section id="example-filtering-out-impossibly-short-tracks" class="slide level2">
 <h2>Example (filtering out impossibly short tracks)</h2>
-<p>The variable <code>duration</code> has a minimum value of 0.31302 seconds. This is impossibly short for a song! The maximum value of duration is 3034.90567 seconds (or 50.5817612 minutes), which may be reasonable for certain genres (e.g., DJ sets, or orchestral performances), but not for popular music tracks. For example below, we will just filter out <em>short</em> tracks of less than 120 seconds (2 minutes). Should you decide to apply a filter such as this, you should provide your own justification for what you decide to be the lower/upper limits of acceptable values for inclusion in your final subset.</p>
+<p>The variable <code>duration</code> has a minimum value of 0.31 seconds. This is impossibly short for a song! The maximum value of duration is 3034.90567 seconds (or 50.5817612 minutes), which may be reasonable for certain genres (e.g., DJ sets, or orchestral performances), but not for popular music tracks. For example below, we will just filter out <em>short</em> tracks of less than 120 seconds (2 minutes). Should you decide to apply a filter such as this, you should provide your own justification for what you decide to be the lower/upper limits of acceptable values for inclusion in your final subset.</p>
 <p><br>
 </p>
 <div class="cell">
@@ -1854,7 +1854,7 @@ The second will be called <code>test_data</code>. This portion is set aside and 
 <div class="cell">
 <div class="sourceCode cell-code" id="cb27"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href></a>training_index <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(MSD_subset), <span class="at">size =</span> <span class="fl">0.80</span> <span class="sc">*</span> <span class="fu">nrow</span>(MSD_subset))</span>
 <span id="cb27-2"><a href></a></span>
-<span id="cb27-3"><a href></a>training_data <span class="ot">&lt;-</span> MSD_subset[training_index, ]</span>
+<span id="cb27-3"><a href></a>training_data <span class="ot">&lt;-</span> MSD_subset[training_index,  ]</span>
 <span id="cb27-4"><a href></a>test_data     <span class="ot">&lt;-</span> MSD_subset[<span class="sc">-</span>training_index, ]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p><br>
