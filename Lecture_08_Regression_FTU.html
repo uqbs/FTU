@@ -2722,24 +2722,50 @@ Some forecasts can be made exactly (i.e., with no error) when the phenomena is <
 </figure>
 </div>
 </div>
-</div></section><section id="non-deterministic-models" class="slide level2">
+</div></section><section id="r-squared-from-this-model" class="slide level2">
+<h2>R squared from this model</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href></a><span class="fu">summary</span>(model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = take_home_pay ~ hourly_wage)
+
+Residuals:
+       Min         1Q     Median         3Q        Max 
+-3.729e-14 -9.455e-15 -5.525e-15  5.040e-16  9.350e-14 
+
+Coefficients:
+             Estimate Std. Error   t value Pr(&gt;|t|)    
+(Intercept) 5.684e-14  2.802e-14 2.029e+00   0.0619 .  
+hourly_wage 2.000e+01  1.548e-15 1.292e+16   &lt;2e-16 ***
+---
+Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+
+Residual standard error: 2.855e-14 on 14 degrees of freedom
+Multiple R-squared:      1, Adjusted R-squared:      1 
+F-statistic: 1.669e+32 on 1 and 14 DF,  p-value: &lt; 2.2e-16</code></pre>
+</div>
+</div>
+</section>
+<section id="non-deterministic-models" class="slide level2">
 <h2>Non-deterministic models</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href></a><span class="fu">set.seed</span>(<span class="dv">2204</span>)</span>
-<span id="cb2-2"><a href></a>study_hours <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="dv">0</span>, <span class="dv">20</span>, <span class="at">by =</span> <span class="dv">1</span>)</span>
-<span id="cb2-3"><a href></a>performance <span class="ot">&lt;-</span> <span class="dv">50</span> <span class="sc">+</span> <span class="fl">2.5</span> <span class="sc">*</span> study_hours <span class="sc">+</span> <span class="fu">rnorm</span>(<span class="fu">length</span>(study_hours), <span class="at">mean =</span> <span class="dv">0</span>, <span class="at">sd =</span> <span class="dv">5</span>)</span>
-<span id="cb2-4"><a href></a>df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(study_hours, performance)</span>
-<span id="cb2-5"><a href></a></span>
-<span id="cb2-6"><a href></a><span class="fu">plot</span>(df<span class="sc">$</span>study_hours, df<span class="sc">$</span>performance,</span>
-<span id="cb2-7"><a href></a>     <span class="at">xlab =</span> <span class="st">&quot;Hours Spent Studying&quot;</span>,</span>
-<span id="cb2-8"><a href></a>     <span class="at">ylab =</span> <span class="st">&quot;Class Performance (%)&quot;</span>,</span>
-<span id="cb2-9"><a href></a>     <span class="at">main =</span> <span class="st">&quot;Effect of Study Time on Class Performance&quot;</span>)</span>
-<span id="cb2-10"><a href></a><span class="fu">grid</span>(<span class="at">col =</span> <span class="st">&quot;gray&quot;</span>)</span>
-<span id="cb2-11"><a href></a></span>
-<span id="cb2-12"><a href></a>model <span class="ot">&lt;-</span> <span class="fu">lm</span>(performance <span class="sc">~</span> study_hours, <span class="at">data =</span> df)</span>
-<span id="cb2-13"><a href></a></span>
-<span id="cb2-14"><a href></a><span class="fu">abline</span>(model)</span>
-<span id="cb2-15"><a href></a><span class="fu">legend</span>(<span class="st">&quot;bottomright&quot;</span>, <span class="at">legend =</span> <span class="fu">paste</span>(<span class="st">&quot;slope =&quot;</span>, <span class="fu">summary</span>(model)<span class="sc">$</span>coefficients[<span class="dv">2</span>] <span class="sc">|&gt;</span> <span class="fu">round</span>(<span class="dv">2</span>)), <span class="at">bty =</span> <span class="st">&quot;n&quot;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href></a><span class="fu">set.seed</span>(<span class="dv">2204</span>)</span>
+<span id="cb4-2"><a href></a>study_hours <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="dv">0</span>, <span class="dv">20</span>, <span class="at">by =</span> <span class="dv">1</span>)</span>
+<span id="cb4-3"><a href></a>performance <span class="ot">&lt;-</span> <span class="dv">50</span> <span class="sc">+</span> <span class="fl">2.5</span> <span class="sc">*</span> study_hours <span class="sc">+</span> <span class="fu">rnorm</span>(<span class="fu">length</span>(study_hours), <span class="at">mean =</span> <span class="dv">0</span>, <span class="at">sd =</span> <span class="dv">5</span>)</span>
+<span id="cb4-4"><a href></a>df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(study_hours, performance)</span>
+<span id="cb4-5"><a href></a></span>
+<span id="cb4-6"><a href></a><span class="fu">plot</span>(df<span class="sc">$</span>study_hours, df<span class="sc">$</span>performance,</span>
+<span id="cb4-7"><a href></a>     <span class="at">xlab =</span> <span class="st">&quot;Hours Spent Studying&quot;</span>,</span>
+<span id="cb4-8"><a href></a>     <span class="at">ylab =</span> <span class="st">&quot;Class Performance (%)&quot;</span>,</span>
+<span id="cb4-9"><a href></a>     <span class="at">main =</span> <span class="st">&quot;Effect of Study Time on Class Performance&quot;</span>)</span>
+<span id="cb4-10"><a href></a><span class="fu">grid</span>(<span class="at">col =</span> <span class="st">&quot;gray&quot;</span>)</span>
+<span id="cb4-11"><a href></a></span>
+<span id="cb4-12"><a href></a>model <span class="ot">&lt;-</span> <span class="fu">lm</span>(performance <span class="sc">~</span> study_hours, <span class="at">data =</span> df)</span>
+<span id="cb4-13"><a href></a></span>
+<span id="cb4-14"><a href></a><span class="fu">abline</span>(model)</span>
+<span id="cb4-15"><a href></a><span class="fu">legend</span>(<span class="st">&quot;bottomright&quot;</span>, <span class="at">legend =</span> <span class="fu">paste</span>(<span class="st">&quot;slope =&quot;</span>, <span class="fu">summary</span>(model)<span class="sc">$</span>coefficients[<span class="dv">2</span>] <span class="sc">|&gt;</span> <span class="fu">round</span>(<span class="dv">2</span>)), <span class="at">bty =</span> <span class="st">&quot;n&quot;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 
 <p>Non-deterministic models have <em>error</em> in their forecasts. The slope of the line in the example above is 2.69, which approximates the effect of <code>hours_spent_studying</code> on <code>class_performance</code> (i.e., the model is not estimate perfectly).</p>
@@ -2755,26 +2781,26 @@ Some forecasts can be made exactly (i.e., with no error) when the phenomena is <
 </div></section><section id="errors-residuals" class="slide level2 scrollable">
 <h2>Errors (residuals)</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href></a><span class="fu">set.seed</span>(<span class="dv">2204</span>)</span>
-<span id="cb3-2"><a href></a>study_hours <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="dv">0</span>, <span class="dv">20</span>, <span class="at">by =</span> <span class="dv">1</span>)</span>
-<span id="cb3-3"><a href></a>performance <span class="ot">&lt;-</span> <span class="dv">50</span> <span class="sc">+</span> <span class="fl">2.5</span> <span class="sc">*</span> study_hours <span class="sc">+</span> <span class="fu">rnorm</span>(<span class="fu">length</span>(study_hours), <span class="at">mean =</span> <span class="dv">0</span>, <span class="at">sd =</span> <span class="dv">5</span>)</span>
-<span id="cb3-4"><a href></a>df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(study_hours, performance)</span>
-<span id="cb3-5"><a href></a></span>
-<span id="cb3-6"><a href></a><span class="fu">plot</span>(df<span class="sc">$</span>study_hours, df<span class="sc">$</span>performance,</span>
-<span id="cb3-7"><a href></a>     <span class="at">xlab =</span> <span class="st">&quot;Hours Spent Studying&quot;</span>,</span>
-<span id="cb3-8"><a href></a>     <span class="at">ylab =</span> <span class="st">&quot;Class Performance (%)&quot;</span>,</span>
-<span id="cb3-9"><a href></a>     <span class="at">main =</span> <span class="st">&quot;Effect of Study Time on Class Performance&quot;</span>)</span>
-<span id="cb3-10"><a href></a><span class="fu">grid</span>(<span class="at">col =</span> <span class="st">&quot;gray&quot;</span>)</span>
-<span id="cb3-11"><a href></a></span>
-<span id="cb3-12"><a href></a>model <span class="ot">&lt;-</span> <span class="fu">lm</span>(performance <span class="sc">~</span> study_hours, <span class="at">data =</span> df)</span>
-<span id="cb3-13"><a href></a></span>
-<span id="cb3-14"><a href></a><span class="fu">abline</span>(model)</span>
-<span id="cb3-15"><a href></a><span class="fu">legend</span>(<span class="st">&quot;bottomright&quot;</span>, <span class="at">legend =</span> <span class="fu">paste</span>(<span class="st">&quot;R-squared =&quot;</span>, <span class="fu">summary</span>(model)<span class="sc">$</span>r.squared <span class="sc">|&gt;</span> <span class="fu">round</span>(<span class="dv">2</span>)), <span class="at">bty =</span> <span class="st">&quot;n&quot;</span>)</span>
-<span id="cb3-16"><a href></a></span>
-<span id="cb3-17"><a href></a>y_hat <span class="ot">&lt;-</span> <span class="fu">predict</span>(model)</span>
-<span id="cb3-18"><a href></a>x <span class="ot">&lt;-</span> df<span class="sc">$</span>study_hours</span>
-<span id="cb3-19"><a href></a>y <span class="ot">&lt;-</span> df<span class="sc">$</span>performance</span>
-<span id="cb3-20"><a href></a><span class="fu">segments</span>(<span class="at">x0 =</span> x, <span class="at">y0 =</span> y, <span class="at">x1 =</span> x, <span class="at">y1 =</span> y_hat, <span class="at">col =</span> <span class="st">&quot;red&quot;</span>, <span class="at">lwd =</span> <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href></a><span class="fu">set.seed</span>(<span class="dv">2204</span>)</span>
+<span id="cb5-2"><a href></a>study_hours <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="dv">0</span>, <span class="dv">20</span>, <span class="at">by =</span> <span class="dv">1</span>)</span>
+<span id="cb5-3"><a href></a>performance <span class="ot">&lt;-</span> <span class="dv">50</span> <span class="sc">+</span> <span class="fl">2.5</span> <span class="sc">*</span> study_hours <span class="sc">+</span> <span class="fu">rnorm</span>(<span class="fu">length</span>(study_hours), <span class="at">mean =</span> <span class="dv">0</span>, <span class="at">sd =</span> <span class="dv">5</span>)</span>
+<span id="cb5-4"><a href></a>df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(study_hours, performance)</span>
+<span id="cb5-5"><a href></a></span>
+<span id="cb5-6"><a href></a><span class="fu">plot</span>(df<span class="sc">$</span>study_hours, df<span class="sc">$</span>performance,</span>
+<span id="cb5-7"><a href></a>     <span class="at">xlab =</span> <span class="st">&quot;Hours Spent Studying&quot;</span>,</span>
+<span id="cb5-8"><a href></a>     <span class="at">ylab =</span> <span class="st">&quot;Class Performance (%)&quot;</span>,</span>
+<span id="cb5-9"><a href></a>     <span class="at">main =</span> <span class="st">&quot;Effect of Study Time on Class Performance&quot;</span>)</span>
+<span id="cb5-10"><a href></a><span class="fu">grid</span>(<span class="at">col =</span> <span class="st">&quot;gray&quot;</span>)</span>
+<span id="cb5-11"><a href></a></span>
+<span id="cb5-12"><a href></a>model <span class="ot">&lt;-</span> <span class="fu">lm</span>(performance <span class="sc">~</span> study_hours, <span class="at">data =</span> df)</span>
+<span id="cb5-13"><a href></a></span>
+<span id="cb5-14"><a href></a><span class="fu">abline</span>(model)</span>
+<span id="cb5-15"><a href></a><span class="fu">legend</span>(<span class="st">&quot;bottomright&quot;</span>, <span class="at">legend =</span> <span class="fu">paste</span>(<span class="st">&quot;R-squared =&quot;</span>, <span class="fu">summary</span>(model)<span class="sc">$</span>r.squared <span class="sc">|&gt;</span> <span class="fu">round</span>(<span class="dv">2</span>)), <span class="at">bty =</span> <span class="st">&quot;n&quot;</span>)</span>
+<span id="cb5-16"><a href></a></span>
+<span id="cb5-17"><a href></a>y_hat <span class="ot">&lt;-</span> <span class="fu">predict</span>(model)</span>
+<span id="cb5-18"><a href></a>x <span class="ot">&lt;-</span> df<span class="sc">$</span>study_hours</span>
+<span id="cb5-19"><a href></a>y <span class="ot">&lt;-</span> df<span class="sc">$</span>performance</span>
+<span id="cb5-20"><a href></a><span class="fu">segments</span>(<span class="at">x0 =</span> x, <span class="at">y0 =</span> y, <span class="at">x1 =</span> x, <span class="at">y1 =</span> y_hat, <span class="at">col =</span> <span class="st">&quot;red&quot;</span>, <span class="at">lwd =</span> <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 
 <p>The distance between the line and the data are the errors (residuals). The <span class="math inline">\(R^2\)</span> value of a model measures how much of the total variation in the data is explained by the model, while the residuals reflect the unexplained variance.</p>
@@ -2876,7 +2902,7 @@ When two predictors in a regression model are highly correlated, it may be becau
 <p><br>
 For your <em>Predictive Analytics Report (A2)</em>, you need to show your <code>R</code> code for specifying your model(s) <em>at a minimum</em>.</p>
 <p><br>
-How you describe your model specification is essentially up to you. You may decide to use a formal/academic representation using equations, path diagrams or develop your own method. What is most important is that you communicate what the specification, and a coherent rationale for that specification.</p>
+How you describe your model specification is <strong>entirely up to you</strong>. You may decide to use a formal/academic representation using equations, path diagrams or develop your own method. What is most important is that you communicate what the specification, and a coherent rationale for that specification.</p>
 </section>
 <section id="model-estimation" class="slide level2">
 <h2>Model estimation</h2>
@@ -2928,11 +2954,11 @@ where <code>n</code> is the number of observations, <code>i</code> is the index 
 <p><br>
 </p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href></a><span class="fu">lm</span>(output_variable <span class="sc">~</span> </span>
-<span id="cb4-2"><a href></a>input_variable_1 </span>
-<span id="cb4-3"><a href></a><span class="sc">+</span> input_variable_2 </span>
-<span id="cb4-4"><a href></a><span class="sc">+</span> ... </span>
-<span id="cb4-5"><a href></a><span class="sc">+</span> input_variable_n)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href></a><span class="fu">lm</span>(output_variable <span class="sc">~</span> </span>
+<span id="cb6-2"><a href></a>input_variable_1 </span>
+<span id="cb6-3"><a href></a><span class="sc">+</span> input_variable_2 </span>
+<span id="cb6-4"><a href></a><span class="sc">+</span> ... </span>
+<span id="cb6-5"><a href></a><span class="sc">+</span> input_variable_n)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p><br>
 <code>~</code> separates the output variable from the list of independent variables.</p>
@@ -2987,11 +3013,11 @@ The <code>lm()</code> function essentially only includes the <span class="math i
 <p><br>
 </p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href></a>model_name <span class="ot">&lt;-</span> <span class="fu">lm</span>(output_variable <span class="sc">~</span> </span>
-<span id="cb5-2"><a href></a>                  input_variable_1 </span>
-<span id="cb5-3"><a href></a>                  <span class="sc">+</span> input_variable_2 </span>
-<span id="cb5-4"><a href></a>                  <span class="sc">+</span> ... </span>
-<span id="cb5-5"><a href></a>                  <span class="sc">+</span> input_variable_n)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href></a>model_name <span class="ot">&lt;-</span> <span class="fu">lm</span>(output_variable <span class="sc">~</span> </span>
+<span id="cb7-2"><a href></a>                  input_variable_1 </span>
+<span id="cb7-3"><a href></a>                  <span class="sc">+</span> input_variable_2 </span>
+<span id="cb7-4"><a href></a>                  <span class="sc">+</span> ... </span>
+<span id="cb7-5"><a href></a>                  <span class="sc">+</span> input_variable_n)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p><br>
 The above example creates a <code>list</code> object called <code>model_name</code>, which we will interact with in various ways. The most obvious of these is to extract the model estimates for reporting in tables or text. Other uses include using the model for prediction, performing missing data analysis and model validation steps.</p>
@@ -3150,13 +3176,13 @@ What is the combined effect of car <code>wt</code> (weight) and <code>hp</code> 
 <p><br>
 The model specification for this using <code>lm()</code> is:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href></a>model1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(mpg <span class="sc">~</span> wt <span class="sc">+</span> hp)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href></a>model1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(mpg <span class="sc">~</span> wt <span class="sc">+</span> hp)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="output-from-summary" class="slide level2">
 <h2>Output from <code>summary()</code></h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href></a><span class="fu">summary</span>(model1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href></a><span class="fu">summary</span>(model1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
@@ -3184,7 +3210,7 @@ How well does this model fit? What variable(s) are significant predictors of <co
 </section>
 <section id="interpreting-regression-models" class="slide level2">
 <h2>Interpreting regression models</h2>
-<p>The <code>lm()</code> provides many statistica, but the the <strong>three</strong> we will focus on in BSAN2204:</p>
+<p>The <code>lm()</code> provides many statistics, but the the <strong>three</strong> we will focus on in BSAN2204:</p>
 <p><br>
 </p>
 <ul>
@@ -3199,10 +3225,10 @@ How well does this model fit? What variable(s) are significant predictors of <co
 <p><br>
 </p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href></a><span class="fu">library</span>(modelsummary)</span>
-<span id="cb9-2"><a href></a><span class="fu">modelsummary</span>(</span>
-<span id="cb9-3"><a href></a>  model1,</span>
-<span id="cb9-4"><a href></a>  <span class="at">stars =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href></a><span class="fu">library</span>(modelsummary)</span>
+<span id="cb11-2"><a href></a><span class="fu">modelsummary</span>(</span>
+<span id="cb11-3"><a href></a>  model1,</span>
+<span id="cb11-4"><a href></a>  <span class="at">stars =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
 <div class="cell-output-display">
@@ -3285,15 +3311,15 @@ How well does this model fit? What variable(s) are significant predictors of <co
 </section>
 <section id="selecting-only-necessary-outputs" class="slide level2">
 <h2>Selecting only necessary outputs</h2>
-<p>The <code>gof_map =</code> option should be used to select which <em>goodness of fit</em> (gof) measures to include. We only want to keep the number of observations (<code>&quot;nobs&quot;</code>) <span class="math inline">\(adj.R^2\)</span> in addition to the <code>estimates</code> and their <code>p-values</code> denoted using <code>stars = TRUE</code> in the main table.</p>
+<p>The <code>gof_map =</code> option should be used to select which <em>goodness of fit</em> (gof) measures to include. We only want to keep the number of observations (<code>&quot;nobs&quot;</code>) <span class="math inline">\(adj.R^2\)</span> in addition to the <code>estimates</code> and their <code>p-values</code> denoted using <code>stars = TRUE</code> in the main table. The standard errors can also be removed from the output table by setting <code>statistic = NULL</code>.</p>
 <p><br>
 </p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb10" data-code-line-numbers="|5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href></a><span class="fu">library</span>(modelsummary)</span>
-<span id="cb10-2"><a href></a><span class="fu">modelsummary</span>(</span>
-<span id="cb10-3"><a href></a>  model1,</span>
-<span id="cb10-4"><a href></a>  <span class="at">stars =</span> <span class="cn">TRUE</span>,</span>
-<span id="cb10-5"><a href></a>  <span class="at">gof_map =</span> <span class="fu">c</span>(<span class="st">&quot;nobs&quot;</span>,<span class="st">&quot;adj.r.squared&quot;</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb12" data-code-line-numbers="|5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href></a><span class="fu">library</span>(modelsummary)</span>
+<span id="cb12-2"><a href></a><span class="fu">modelsummary</span>(</span>
+<span id="cb12-3"><a href></a>  model1,</span>
+<span id="cb12-4"><a href></a>  <span class="at">stars =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb12-5"><a href></a>  <span class="at">gof_map =</span> <span class="fu">c</span>(<span class="st">&quot;nobs&quot;</span>,<span class="st">&quot;adj.r.squared&quot;</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
 <div class="cell-output-display">
@@ -3310,35 +3336,23 @@ How well does this model fit? What variable(s) are significant predictors of <co
 <td style="text-align: center;">37.227***</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;"></td>
-<td style="text-align: center;">(1.599)</td>
-</tr>
-<tr class="odd">
 <td style="text-align: left;">wt</td>
 <td style="text-align: center;">−3.878***</td>
 </tr>
-<tr class="even">
-<td style="text-align: left;"></td>
-<td style="text-align: center;">(0.633)</td>
-</tr>
 <tr class="odd">
-<td style="text-align: left;">hp</td>
-<td style="text-align: center;">−0.032**</td>
+<td style="text-align: left; box-shadow: 0px 1.5px;">hp</td>
+<td style="text-align: center; box-shadow: 0px 1.5px;">−0.032**</td>
 </tr>
 <tr class="even">
-<td style="text-align: left; box-shadow: 0px 1.5px;"></td>
-<td style="text-align: center; box-shadow: 0px 1.5px;">(0.009)</td>
-</tr>
-<tr class="odd">
 <td style="text-align: left;">Num.Obs.</td>
 <td style="text-align: center;">32</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;">R2 Adj.</td>
 <td style="text-align: center;">0.815</td>
 </tr>
 </tbody><tfoot>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left; padding: 0;"><sup></sup> + p &lt; 0.1, * p &lt; 0.05, ** p &lt; 0.01, *** p &lt; 0.001</td>
 <td style="text-align: center;"></td>
 </tr>
@@ -3392,21 +3406,21 @@ It is useful for the analyst to inspect the <code>F-statistic</code> during mode
 <p><br>
 For example, a very <em>very</em> small number:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href></a>small_number <span class="ot">&lt;-</span> <span class="fl">0.0000000000045</span></span>
-<span id="cb11-2"><a href></a>small_number</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href></a>small_number <span class="ot">&lt;-</span> <span class="fl">0.0000000000045</span></span>
+<span id="cb13-2"><a href></a>small_number</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 4.5e-12</code></pre>
 </div>
 </div>
 <p><br>
 To convert a number in scientific notation to standard decimal notation, use <code>formatC(format = &quot;f&quot;)</code>, for example (as inline code in Markdown):</p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode numberSource default number-lines code-with-copy"><code class="sourceCode default"><span id="cb13-1"><a href></a>The value stored in `small_number` is `r small_number |&gt; formatC(format = &quot;f&quot;)`.</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode numberSource default number-lines code-with-copy"><code class="sourceCode default"><span id="cb15-1"><a href></a>The value stored in `small_number` is `r small_number |&gt; formatC(format = &quot;f&quot;)`.</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p><br>
 The value stored in <code>small_number</code> is 0.0000</p>
 </section>
 <section id="round-vs-formatc" class="slide level2">
 <h2><code>round()</code> vs <code>formatC()</code></h2>
-<p>A quick aside to discuss how <code>R</code> formats scientific notation… In the notes on <em>descriptive statistics</em> <code>round()</code> and <code>formatC()</code> were both used, and here again we using formatC()`. Which should you use?</p>
+<p>A quick aside to discuss how <code>R</code> formats scientific notation… In the notes on <em>descriptive statistics</em> <code>round()</code> and <code>formatC()</code> were both used, and here again we using <code>formatC()</code>. Which should you use?</p>
 <p><br>
 In <code>R</code>, <code>round()</code> is a mathematical rounding function that changes the numeric value itself, while <code>formatC()</code> is a formatting function that controls how numbers are displayed (padding, decimal places, alignment) without altering the underlying value.</p>
 <p><br>
@@ -3418,8 +3432,8 @@ In <code>R</code>, <code>round()</code> is a mathematical rounding function that
 <p><br>
 </p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href></a>model1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(mpg <span class="sc">~</span> wt <span class="sc">+</span> hp)</span>
-<span id="cb14-2"><a href></a>model2 <span class="ot">&lt;-</span> <span class="fu">lm</span>(mpg <span class="sc">~</span> wt <span class="sc">+</span> hp <span class="sc">+</span> cyl <span class="sc">+</span> disp <span class="sc">+</span> drat <span class="sc">+</span> qsec <span class="sc">+</span> am <span class="sc">+</span> vs)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href></a>model1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(mpg <span class="sc">~</span> wt <span class="sc">+</span> hp)</span>
+<span id="cb16-2"><a href></a>model2 <span class="ot">&lt;-</span> <span class="fu">lm</span>(mpg <span class="sc">~</span> wt <span class="sc">+</span> hp <span class="sc">+</span> cyl <span class="sc">+</span> disp <span class="sc">+</span> drat <span class="sc">+</span> qsec <span class="sc">+</span> am <span class="sc">+</span> vs)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="custom-style" style="font-size: 0.8em;">
 <table class="caption-top" style="width:100%;">
@@ -3470,8 +3484,8 @@ For example, <code>lm(mpg ~ wt + I(wt^2) + hp)</code> adds a new variable (<code
 <p><br>
 </p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href></a>model1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(mpg <span class="sc">~</span> wt <span class="sc">+</span> hp)</span>
-<span id="cb15-2"><a href></a>model3 <span class="ot">&lt;-</span> <span class="fu">lm</span>(mpg <span class="sc">~</span> wt <span class="sc">+</span> <span class="fu">I</span>(wt<span class="sc">^</span><span class="dv">2</span>) <span class="sc">+</span> hp)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href></a>model1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(mpg <span class="sc">~</span> wt <span class="sc">+</span> hp)</span>
+<span id="cb17-2"><a href></a>model3 <span class="ot">&lt;-</span> <span class="fu">lm</span>(mpg <span class="sc">~</span> wt <span class="sc">+</span> <span class="fu">I</span>(wt<span class="sc">^</span><span class="dv">2</span>) <span class="sc">+</span> hp)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p><br>
 The new term <code>I(wt^2)</code> adds a new variable to the prediction equation and the <code>I()</code> function treats the contents within the parentheses as an arithmetic expression.</p>
@@ -3488,7 +3502,7 @@ A 3rd-degree polynomial creates a curve with two bends and hence is a more compl
 <p><br>
 3rd degree polynomial:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href></a>model4 <span class="ot">&lt;-</span> <span class="fu">lm</span>(mpg <span class="sc">~</span> wt <span class="sc">+</span> <span class="fu">I</span>(wt<span class="sc">^</span><span class="dv">2</span>) <span class="sc">+</span> <span class="fu">I</span>(wt<span class="sc">^</span><span class="dv">3</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href></a>model4 <span class="ot">&lt;-</span> <span class="fu">lm</span>(mpg <span class="sc">~</span> wt <span class="sc">+</span> <span class="fu">I</span>(wt<span class="sc">^</span><span class="dv">2</span>) <span class="sc">+</span> <span class="fu">I</span>(wt<span class="sc">^</span><span class="dv">3</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="visualising-polynomial-effects" class="slide level2">
@@ -3497,17 +3511,17 @@ A 3rd-degree polynomial creates a curve with two bends and hence is a more compl
 <p><br>
 </p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href></a><span class="fu">plot</span>(</span>
-<span id="cb17-2"><a href></a>  mtcars<span class="sc">$</span>wt, mtcars<span class="sc">$</span>mpg,</span>
-<span id="cb17-3"><a href></a>  <span class="at">xlab =</span> <span class="st">&quot;Weight (1000 lbs)&quot;</span>,</span>
-<span id="cb17-4"><a href></a>  <span class="at">ylab =</span> <span class="st">&quot;Miles per gallon (MPG)&quot;</span>,</span>
-<span id="cb17-5"><a href></a>  <span class="at">main =</span> <span class="st">&quot;MPG vs Weight with Fitted Lines&quot;</span></span>
-<span id="cb17-6"><a href></a>)</span>
-<span id="cb17-7"><a href></a></span>
-<span id="cb17-8"><a href></a><span class="fu">abline</span>(model1, <span class="at">col =</span> <span class="st">&quot;blue&quot;</span>)</span>
-<span id="cb17-9"><a href></a>ord <span class="ot">&lt;-</span> <span class="fu">order</span>(mtcars<span class="sc">$</span>wt)</span>
-<span id="cb17-10"><a href></a><span class="fu">lines</span>(mtcars<span class="sc">$</span>wt[ord], <span class="fu">fitted</span>(model3)[ord], <span class="at">col =</span> <span class="st">&quot;red&quot;</span>)</span>
-<span id="cb17-11"><a href></a><span class="fu">lines</span>(mtcars<span class="sc">$</span>wt[ord], <span class="fu">fitted</span>(model4)[ord], <span class="at">col =</span> <span class="st">&quot;darkgreen&quot;</span>, <span class="at">lty =</span> <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href></a><span class="fu">plot</span>(</span>
+<span id="cb19-2"><a href></a>  mtcars<span class="sc">$</span>wt, mtcars<span class="sc">$</span>mpg,</span>
+<span id="cb19-3"><a href></a>  <span class="at">xlab =</span> <span class="st">&quot;Weight (1000 lbs)&quot;</span>,</span>
+<span id="cb19-4"><a href></a>  <span class="at">ylab =</span> <span class="st">&quot;Miles per gallon (MPG)&quot;</span>,</span>
+<span id="cb19-5"><a href></a>  <span class="at">main =</span> <span class="st">&quot;MPG vs Weight with Fitted Lines&quot;</span></span>
+<span id="cb19-6"><a href></a>)</span>
+<span id="cb19-7"><a href></a></span>
+<span id="cb19-8"><a href></a><span class="fu">abline</span>(model1, <span class="at">col =</span> <span class="st">&quot;blue&quot;</span>)</span>
+<span id="cb19-9"><a href></a>ord <span class="ot">&lt;-</span> <span class="fu">order</span>(mtcars<span class="sc">$</span>wt)</span>
+<span id="cb19-10"><a href></a><span class="fu">lines</span>(mtcars<span class="sc">$</span>wt[ord], <span class="fu">fitted</span>(model3)[ord], <span class="at">col =</span> <span class="st">&quot;red&quot;</span>)</span>
+<span id="cb19-11"><a href></a><span class="fu">lines</span>(mtcars<span class="sc">$</span>wt[ord], <span class="fu">fitted</span>(model4)[ord], <span class="at">col =</span> <span class="st">&quot;darkgreen&quot;</span>, <span class="at">lty =</span> <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 
 </section>
@@ -3535,14 +3549,14 @@ Interactions between variables can also be included in the regression equation u
 <p><br>
 </p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href></a>model5 <span class="ot">&lt;-</span> <span class="fu">lm</span>(mpg <span class="sc">~</span> wt <span class="sc">+</span> hp<span class="sc">:</span>wt)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href></a>model5 <span class="ot">&lt;-</span> <span class="fu">lm</span>(mpg <span class="sc">~</span> wt <span class="sc">+</span> hp<span class="sc">:</span>wt)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="visualising-interactions" class="slide level2">
 <h2>Visualising interactions</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href></a>model3 <span class="ot">&lt;-</span> <span class="fu">lm</span>(mpg <span class="sc">~</span> wt <span class="sc">+</span> hp <span class="sc">+</span> hp<span class="sc">:</span>wt)</span>
-<span id="cb19-2"><a href></a>sjPlot<span class="sc">::</span><span class="fu">plot_model</span>(model3, <span class="at">type =</span> <span class="st">&quot;int&quot;</span>, <span class="at">mdrt.values =</span> <span class="st">&quot;all&quot;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href></a>model3 <span class="ot">&lt;-</span> <span class="fu">lm</span>(mpg <span class="sc">~</span> wt <span class="sc">+</span> hp <span class="sc">+</span> hp<span class="sc">:</span>wt)</span>
+<span id="cb21-2"><a href></a>sjPlot<span class="sc">::</span><span class="fu">plot_model</span>(model3, <span class="at">type =</span> <span class="st">&quot;int&quot;</span>, <span class="at">mdrt.values =</span> <span class="st">&quot;all&quot;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure>
@@ -3567,10 +3581,10 @@ The outputs for each model are stored in <code>lm()</code> model objects which w
 <p><br>
 </p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href></a><span class="fu">modelsummary</span>(<span class="fu">list</span>(model1, model2, model3, model4, model5),  </span>
-<span id="cb20-2"><a href></a>  <span class="at">stars =</span> <span class="cn">TRUE</span>,</span>
-<span id="cb20-3"><a href></a>  <span class="at">fmt =</span> <span class="dv">5</span>,</span>
-<span id="cb20-4"><a href></a>  <span class="at">gof_map =</span> <span class="fu">c</span>(<span class="st">&quot;Num</span><span class="sc">\\</span><span class="st">.Obs&quot;</span>, <span class="st">&quot;adj.r.squared&quot;</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href></a><span class="fu">modelsummary</span>(<span class="fu">list</span>(model1, model2, model3, model4, model5),  </span>
+<span id="cb22-2"><a href></a>  <span class="at">stars =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb22-3"><a href></a>  <span class="at">fmt =</span> <span class="dv">5</span>,</span>
+<span id="cb22-4"><a href></a>  <span class="at">gof_map =</span> <span class="fu">c</span>(<span class="st">&quot;Num</span><span class="sc">\\</span><span class="st">.Obs&quot;</span>, <span class="st">&quot;adj.r.squared&quot;</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 
 <aside><div>
